@@ -33,10 +33,14 @@ class Client:
 
     def __init__(self, *, loop=None):
         self.loop = loop or asyncio.get_event_loop()
-        self._session = aiohttp.ClientSession()
+        self._session = aiohttp.ClientSession(loop=self.loop)
 
         self.logged_in = False
         self.codingamer = None
+
+    async def close(self):
+        """Closes the Client connection."""
+        await self._session.close()
 
     @validate_args
     async def login(self, email: str, password: str):
