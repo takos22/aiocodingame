@@ -30,7 +30,6 @@ setup(
     license="MIT",
     description="Asynchronous pythonic wrapper for the undocumented CodinGame API.",
     long_description=readme,
-    long_description_content_type="text/x-rst",
     install_requires=requirements,
     python_requires=">=3.6",
     classifiers=[
