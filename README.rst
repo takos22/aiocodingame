@@ -1,5 +1,5 @@
 aiocodingame
-=========
+============
 .. image:: https://img.shields.io/pypi/v/aiocodingame?color=blue
    :target: https://pypi.python.org/pypi/aiocodingame
    :alt: PyPI version info
