@@ -4,7 +4,7 @@
 API Reference
 ===============
 
-The following section outlines the API of codingame.
+The following section outlines the API of aiocodingame.
 
 Version Related Info
 ----------------------

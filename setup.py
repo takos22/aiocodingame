@@ -18,7 +18,7 @@ with open("README.rst") as f:
 
 
 setup(
-    name="codingame",
+    name="aiocodingame",
     author="takos22",
     url="https://github.com/takos22/aiocodingame",
     project_urls={

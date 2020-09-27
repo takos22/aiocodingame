@@ -90,4 +90,4 @@ Let's log in into a profile with the email and password.
 
 .. note::
     Don't worry, the email and the password aren't stored.
-    You can see that `here <https://github.com/takos22/aiocodingame/blob/master/codingame/client.py>`_.
+    You can see that `here <https://github.com/takos22/aiocodingame/blob/master/aiocodingame/client.py>`_.
