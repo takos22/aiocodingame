@@ -1,5 +1,5 @@
 Welcome to aiocodingame's documentation!
-=======================================
+========================================
 
 ``aiocodingame`` is a asynchronous pythonic wrapper for the undocumented CodinGame API.
 

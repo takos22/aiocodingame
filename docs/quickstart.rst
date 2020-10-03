@@ -25,7 +25,7 @@ The code will be something like this:
         client = aiocodingame.Client()
 
         # get a codingamer from his public handle
-        me = client.get_codingamer("your handle here")
+        me = await client.get_codingamer("your handle here")
 
         print(me)
         print(me.pseudo)
