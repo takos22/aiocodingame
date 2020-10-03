@@ -1,4 +1,4 @@
-from typing import List, Optional, Iterator
+from typing import Optional, AsyncIterator
 
 from .abc import BaseUser
 from .endpoints import Endpoints
@@ -108,15 +108,13 @@ class CodinGamer(BaseUser):
         self.avatar = data.get("avatar", None)
         self.cover = data.get("cover", None)
 
-    @property
-    def followers(self) -> Iterator:
-        """Get all the followers of a CodinGamer.
+    async def followers(self) -> AsyncIterator:
+        """|coro|
+
+        Get all the followers of a CodinGamer.
 
         You need to be logged as the CodinGamer in to get its followers
         or else a :exc:`LoginRequired` will be raised.
-
-        .. note::
-            This property is a generator.
 
         Raises
         ------
@@ -132,19 +130,17 @@ class CodinGamer(BaseUser):
         if not self._client.logged_in or self.public_handle != self._client.codingamer.public_handle:
             raise LoginRequired()
 
-        r = self._client._session.post(Endpoints.CodinGamer_followers, json=[self.id, self.id, None])
+        r = await self._client._session.post(Endpoints.CodinGamer_followers, json=[self.id, self.id, None])
         for follower in r.json():
             yield CodinGamer(client=self._client, **follower)
 
-    @property
-    def following(self) -> Iterator:
-        """Get all the followed CodinGamers.
+    async def following(self) -> AsyncIterator:
+        """|coro|
+
+        Get all the followed CodinGamers.
 
         You need to be logged as the CodinGamer in to get its followed CodinGamers
         or else a :exc:`LoginRequired` will be raised.
-
-        .. note::
-            This property is a generator.
 
         Raises
         ------
@@ -160,7 +156,7 @@ class CodinGamer(BaseUser):
         if not self._client.logged_in or self.public_handle != self._client.codingamer.public_handle:
             raise LoginRequired()
 
-        r = self._client._session.post(Endpoints.CodinGamer_following, json=[self.id, self.id])
+        r = await self._client._session.post(Endpoints.CodinGamer_following, json=[self.id, self.id])
         for followed in r.json():
             yield CodinGamer(client=self._client, **followed)
 
