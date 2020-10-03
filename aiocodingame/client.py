@@ -2,7 +2,7 @@ import asyncio
 import aiohttp
 import re
 
-from typing import AsyncGenerator, AsyncIterator, List, Optional
+from typing import AsyncIterator, List, Optional
 
 from .codingamer import CodinGamer
 from .clash_of_code import ClashOfCode
@@ -14,7 +14,11 @@ from .utils import validate_args
 
 
 class Client:
-    """CodinGame API client.
+    """Asynchronous CodinGame API client.
+
+    .. note::
+        You need to initialize this class in a |coroutine_link|_.
+        When you finish using the Cient, you need to close the session with :meth:`close`.
 
     Attributes
     -----------
@@ -39,12 +43,17 @@ class Client:
         self.codingamer = None
 
     async def close(self):
-        """Closes the Client connection."""
+        """|coro|
+
+        Closes the Client connection.
+        """
         await self._session.close()
 
     @validate_args
     async def login(self, email: str, password: str):
-        """Login to a CodinGamer account.
+        """|coro|
+
+        Login to a CodinGamer account.
 
         Parameters
         -----------
@@ -80,7 +89,9 @@ class Client:
 
     @validate_args
     async def get_codingamer(self, codingamer_handle: str) -> CodinGamer:
-        """Get a CodinGamer from his public handle.
+        """|coro|
+
+        Get a CodinGamer from his public handle.
 
         Parameters
         -----------
@@ -104,7 +115,8 @@ class Client:
 
         if not self._CODINGAMER_HANDLE_REGEX.match(codingamer_handle):
             raise ValueError(
-                f"CodinGamer handle {codingamer_handle!r} isn't in the good format " "(regex: [0-9a-f]{32}[0-9]{7})."
+                f"CodinGamer handle {codingamer_handle!r} isn't in the good format "
+                "(regex: [0-9a-f]{32}[0-9]{7})."
             )
 
         r = await self._session.post(Endpoints.CodinGamer, json=[codingamer_handle])
@@ -115,7 +127,9 @@ class Client:
 
     @validate_args
     async def get_clash_of_code(self, clash_of_code_handle: str) -> ClashOfCode:
-        """Get a Clash of Code from its public handle.
+        """|coro|
+
+        Get a Clash of Code from its public handle.
 
         Parameters
         -----------
@@ -150,7 +164,9 @@ class Client:
         return ClashOfCode(client=self, **json)
 
     async def get_pending_clash_of_code(self) -> Optional[ClashOfCode]:
-        """Get a pending Clash of Code.
+        """|coro|
+
+        Get a pending Clash of Code.
 
         Returns
         --------
@@ -165,7 +181,9 @@ class Client:
         return ClashOfCode(client=self, **json[0])
 
     async def language_ids(self) -> List[str]:
-        """Get all valid language ids from CodinGame.
+        """|coro|
+
+        Get all valid language ids from CodinGame.
 
         Returns
         --------
@@ -177,7 +195,9 @@ class Client:
         return await r.json()
 
     async def notifications(self) -> AsyncIterator[Notification]:
-        """Get all the unseen notifications of the Client.
+        """|coro|
+
+        Get all the unseen notifications of the Client.
 
         You need to be logged in to get notifications or else a :exc:`LoginRequired` will be raised.
 

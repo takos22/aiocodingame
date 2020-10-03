@@ -59,6 +59,13 @@ intersphinx_mapping = {
     "req": ("https://requests.readthedocs.io/en/latest/", None)
 }
 
+rst_prolog = """
+.. |coro| replace:: This function is a |coroutine_link|_.
+.. |maybecoro| replace:: This function *could be a* |coroutine_link|_.
+.. |coroutine_link| replace:: *coroutine*
+.. _coroutine_link: https://docs.python.org/3/library/asyncio-task.html#coroutine
+"""
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
