@@ -9,6 +9,9 @@ aiocodingame
 .. image:: https://img.shields.io/pypi/dm/aiocodingame
    :target: https://pypi.python.org/pypi/aiocodingame
    :alt: PyPI downloads
+.. image:: https://readthedocs.org/projects/aiocodingame/badge/?version=latest
+   :target: https://aiocodingame.readthedocs.io/en/latest/
+   :alt: Documentation Status
 .. image:: https://img.shields.io/github/license/takos22/aiocodingame?color=brightgreen
    :alt: License: MIT
 .. image:: https://img.shields.io/discord/754028526079836251.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2
