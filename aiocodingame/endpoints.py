@@ -14,7 +14,10 @@ class Endpoints:
     CodinGamer_id = BASE + "CodinGamer/findCodinGamerPublicInformations"
     CodinGamer_login = BASE + "CodinGamer/loginSiteV2"
     CodinGamer_followers = BASE + "CodinGamer/findFollowers"
+    CodinGamer_followers_ids = BASE + "CodinGamer/findFollowerIds"
     CodinGamer_following = BASE + "CodinGamer/findFollowing"
+    CodinGamer_following_ids = BASE + "CodinGamer/findFollowingIds"
+    CodinGamer_coc_rank = BASE + "ClashOfCode/getClashRankByCodinGamerId"
 
     # Clash of Code
     ClashOfCode = BASE + "ClashOfCode/findClashByHandle"
