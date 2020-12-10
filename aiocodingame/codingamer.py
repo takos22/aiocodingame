@@ -24,6 +24,9 @@ class CodinGamer(BaseUser):
         level: :class:`int`
             Level of the CodinGamer.
 
+        xp: :class:`int`
+            XP points of the CodinGamer.
+
         country_id: :class:`str`
             Country ID of the CodinGamer.
 
@@ -72,6 +75,7 @@ class CodinGamer(BaseUser):
     id: int
     rank: int
     level: int
+    xp: int
     country_id: str
     category: Optional[str]
     student: bool
@@ -91,7 +95,6 @@ class CodinGamer(BaseUser):
 
         self.public_handle = data["publicHandle"]
         self.id = data["userId"]
-        self.rank = data["rank"]
         self.level = data["level"]
         self.country_id = data["countryId"]
 
@@ -99,6 +102,8 @@ class CodinGamer(BaseUser):
         self.student = self.category == "STUDENT"
         self.professional = self.category == "PROFESSIONAL"
 
+        self.xp = data.get("xp", None)
+        self.rank = data.get("rank", None)
         self.pseudo = data.get("pseudo", None) or None
         self.tagline = data.get("tagline", None) or None
         self.biography = data.get("biography", None) or None
