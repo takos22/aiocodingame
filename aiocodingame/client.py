@@ -88,24 +88,30 @@ class Client:
         return self.codingamer
 
     @validate_args
-    async def get_codingamer(self, codingamer_handle: str) -> CodinGamer:
+    async def get_codingamer(self, codingamer) -> CodinGamer:
         """|coro|
 
-        Get a CodinGamer from his public handle.
+        Get a CodinGamer from their public handle, their id or from their username.
+
+        .. note::
+            ``codingamer`` can be the public handle, the id or the username. Using the public handle
+            or the id is reccomended because it won't change even if the codingamer changes
+            their username.
+
+            The public handle is a 39 character long hexadecimal string that represents the user.
+            Regex of a public handle: ``[0-9a-f]{32}[0-9]{7}``
+
+            The id is a 7 number long integer
 
         Parameters
         -----------
-            codingamer_handle: :class:`str`
-                The CodinGamer's public handle.
-                39 character long hexadecimal string (regex: ``[0-9a-f]{32}[0-9]{7}``).
+            codingamer: :class:`str`
+                The CodinGamer's public handle, id or username.
 
         Raises
         ------
-            :exc:`ValueError`
-                The CodinGamer handle isn't in the good format.
-
             :exc:`.CodinGamerNotFound`
-                The CodinGamer with the given public handle isn't found.
+                The CodinGamer with the given public handle, id or username isn't found.
 
         Returns
         --------
@@ -113,16 +119,28 @@ class Client:
                 The CodinGamer.
         """
 
-        if not self._CODINGAMER_HANDLE_REGEX.match(codingamer_handle):
-            raise ValueError(
-                f"CodinGamer handle {codingamer_handle!r} isn't in the good format "
-                "(regex: [0-9a-f]{32}[0-9]{7})."
-            )
+        if type(codingamer) == int:
+            r = await self._session.post(Endpoints.CodinGamer_id, json=[codingamer])
+            json = await r.json()
+            if "id" in json and json["id"] == 404:
+                raise CodinGamerNotFound(f"No CodinGamer with id {codingamer!r}")
+            return CodinGamer(client=self, **json)
 
-        r = await self._session.post(Endpoints.CodinGamer, json=[codingamer_handle])
+        if not self._CODINGAMER_HANDLE_REGEX.match(codingamer):
+            r = await self._session.post(Endpoints.Search, json=[codingamer, "en", None])
+            search: List[dict] = await r.json()
+            users = [query for query in search if query["type"] == "USER"]
+            if users:
+                handle = users[0]["id"]
+            else:
+                raise CodinGamerNotFound(f"No CodinGamer with username {codingamer!r}")
+        else:
+            handle = codingamer
+
+        r = await self._session.post(Endpoints.CodinGamer, json=[handle])
         json = await r.json()
         if json is None:
-            raise CodinGamerNotFound(f"No CodinGamer with handle {codingamer_handle!r}")
+            raise CodinGamerNotFound(f"No CodinGamer with handle {handle!r}")
         return CodinGamer(client=self, **json["codingamer"])
 
     @validate_args
