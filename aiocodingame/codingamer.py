@@ -59,12 +59,13 @@ class CodinGamer(BaseUser):
             School of the CodinGamer, if set else `None`.
 
         avatar: Optional[:class:`int`]
-            Avatar ID of the CodinGamer, if set else `None`. You can get the avatar url with :attr:`avatar_url`.
+            Avatar ID of the CodinGamer, if set else `None`.
+            You can get the avatar url with :attr:`avatar_url`.
 
         cover: Optional[:class:`int`]
-            Cover ID of the CodinGamer, if set else `None`. You can get the cover url with :attr:`cover_url`.
             Cover ID of the CodinGamer, if set else `None`.
             You can get the cover url with :attr:`cover_url`.
+
         avatar_url: Optional[:class:`str`]
             Avatar URL of the CodinGamer, if set else `None`.
 
@@ -121,8 +122,12 @@ class CodinGamer(BaseUser):
 
         Get all the followers of a CodinGamer.
 
-        You need to be logged as the CodinGamer in to get its followers
-        or else a :exc:`LoginRequired` will be raised.
+        You need to be logged in as the CodinGamer to get its followers
+        or else a :exc:`LoginRequired` will be raised. If you can't log in,
+        you can use :meth:`CodinGamer.followers_ids`.
+
+        .. note::
+            This property is a generator.
 
         Raises
         ------
@@ -135,20 +140,43 @@ class CodinGamer(BaseUser):
                 The follower.
         """
 
-        if not self._client.logged_in or self.public_handle != self._client.codingamer.public_handle:
+        if (
+            not self._client.logged_in
+            or self.public_handle != self._client.codingamer.public_handle
+        ):
             raise LoginRequired()
 
-        r = await self._client._session.post(Endpoints.CodinGamer_followers, json=[self.id, self.id, None])
-        for follower in r.json():
+        r = await self._client._session.post(
+            Endpoints.CodinGamer_followers, json=[self.id, self.id, None]
+        )
+        for follower in await r.json():
             yield CodinGamer(client=self._client, **follower)
+
+    async def followers_ids(self) -> list:
+        """|coro|
+
+        Get all the followers ids of a CodinGamer.
+
+        Returns
+        -------
+            :class:`list`
+                A list of all the followers ids. See :attr:`CodinGamer.id`.
+        """
+
+        r = await self._client._session.post(Endpoints.CodinGamer_followers_ids, json=[self.id])
+        return await r.json()
 
     async def following(self) -> AsyncIterator:
         """|coro|
 
         Get all the followed CodinGamers.
 
-        You need to be logged as the CodinGamer in to get its followed CodinGamers
-        or else a :exc:`LoginRequired` will be raised.
+        You need to be logged in as the CodinGamer to get its followed CodinGamers
+        or else a :exc:`LoginRequired` will be raised. If you can't log in,
+        you can use :meth:`CodinGamer.following_ids`.
+
+        .. note::
+            This property is a generator.
 
         Raises
         ------
@@ -161,12 +189,45 @@ class CodinGamer(BaseUser):
                 The followed CodinGamer.
         """
 
-        if not self._client.logged_in or self.public_handle != self._client.codingamer.public_handle:
+        if (
+            not self._client.logged_in
+            or self.public_handle != self._client.codingamer.public_handle
+        ):
             raise LoginRequired()
 
-        r = await self._client._session.post(Endpoints.CodinGamer_following, json=[self.id, self.id])
-        for followed in r.json():
+        r = await self._client._session.post(
+            Endpoints.CodinGamer_following, json=[self.id, self.id]
+        )
+        for followed in await r.json():
             yield CodinGamer(client=self._client, **followed)
+
+    async def following_ids(self) -> list:
+        """|coro|
+
+        Get all the followed ids of a CodinGamer.
+
+        Returns
+        -------
+            :class:`list`
+                A list of all the followed ids. See :attr:`CodinGamer.id`.
+        """
+
+        r = await self._client._session.post(Endpoints.CodinGamer_following_ids, json=[self.id])
+        return await r.json()
+
+    async def clash_of_code_rank(self) -> int:
+        """|coro|
+
+        Get the Clash of Code rank of the CodinGamer.
+
+        Returns
+        -------
+            :class:`int`
+                The Clash of Code rank of the CodinGamer.
+        """
+
+        r = self._client._session.post(Endpoints.CodinGamer_coc_rank, json=[self.id])
+        return (await r.json())["rank"]
 
     def __repr__(self):
         return "<CodinGamer public_handle={0.public_handle!r} id={0.id!r}>".format(self)
