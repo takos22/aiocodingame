@@ -63,7 +63,8 @@ class CodinGamer(BaseUser):
 
         cover: Optional[:class:`int`]
             Cover ID of the CodinGamer, if set else `None`. You can get the cover url with :attr:`cover_url`.
-
+            Cover ID of the CodinGamer, if set else `None`.
+            You can get the cover url with :attr:`cover_url`.
         avatar_url: Optional[:class:`str`]
             Avatar URL of the CodinGamer, if set else `None`.
 
@@ -108,7 +109,9 @@ class CodinGamer(BaseUser):
         self.tagline = data.get("tagline", None) or None
         self.biography = data.get("biography", None) or None
         self.company = data.get("company", None) or data.get("companyField", None) or None
-        self.school = data.get("schoolField", None) or data.get("formValues", {}).get("school", None) or None
+        self.school = (
+            data.get("schoolField", None) or data.get("formValues", {}).get("school", None) or None
+        )
 
         self.avatar = data.get("avatar", None)
         self.cover = data.get("cover", None)
