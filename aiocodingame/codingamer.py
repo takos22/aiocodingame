@@ -226,7 +226,7 @@ class CodinGamer(BaseUser):
                 The Clash of Code rank of the CodinGamer.
         """
 
-        r = self._client._session.post(Endpoints.CodinGamer_coc_rank, json=[self.id])
+        r = await self._client._session.post(Endpoints.CodinGamer_coc_rank, json=[self.id])
         return (await r.json())["rank"]
 
     def __repr__(self):
