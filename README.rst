@@ -1,58 +1,35 @@
-aiocodingame
-============
-.. image:: https://img.shields.io/pypi/v/aiocodingame?color=blue
-   :target: https://pypi.python.org/pypi/aiocodingame
-   :alt: PyPI version info
-.. image:: https://img.shields.io/pypi/pyversions/aiocodingame?color=orange
-   :target: https://pypi.python.org/pypi/aiocodingame
-   :alt: PyPI supported Python versions
-.. image:: https://img.shields.io/pypi/dm/aiocodingame
-   :target: https://pypi.python.org/pypi/aiocodingame
-   :alt: PyPI downloads
-.. image:: https://readthedocs.org/projects/aiocodingame/badge/?version=latest
-   :target: https://aiocodingame.readthedocs.io/en/latest/
-   :alt: Documentation Status
-.. image:: https://img.shields.io/github/license/takos22/aiocodingame?color=brightgreen
-   :alt: License: MIT
-.. image:: https://img.shields.io/discord/754028526079836251.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2
-   :target: https://discord.gg/8HgtN6E
-   :alt: Discord support server
+⛔️ DEPRACATED: aiocodingame module
+===================================
 
-Asynchronous pythonic wrapper for the undocumented CodinGame API.
+Use the `codingame module <https://github.com/takos22/codingame>`_ instead.
+
+Install that module:
+
+.. code-block:: sh
+
+   pip install codingame[async]
 
 
-Installing
-----------
+To create an asynchronous client:
 
-**Python 3.6 or higher is required.**
+.. code-block:: py
 
-Run the following command:
+   import asyncio
+   import codingame
 
-.. code:: sh
+   async def main():
+      client = codingame.Client(is_async=True)
 
-    pip install aiocodingame
+      # if you want to log in
+      await client.login("email@example.com", "password")
 
+      # get a codingamer
+      codingamer = await client.get_codingamer("username")
+      print(codingamer.pseudo)
 
-Contribute
-----------
+      # get the global leaderboard
+      global_leaderboard = await client.get_global_leaderboard()
+      # print the pseudo of the top codingamer
+      print(global_leaderboard.users[0].pseudo)
 
-- `Source Code <https://github.com/takos22/aiocodingame>`_
-- `Issue Tracker <https://github.com/takos22/aiocodingame/issues>`_
-
-
-Support
--------
-
-If you are having issues, please let me know by joining the support server at https://discord.gg/8HgtN6E
-
-License
--------
-
-The project is licensed under the MIT license.
-
-Links
-------
-
-- `PyPi <https://pypi.org/project/aiocodingame/>`_
-- `Documentation <https://aiocodingame.readthedocs.io/en/latest/index.html>`_
-- `Discord support server <https://discord.gg/8HgtN6E>`_
+   asyncio.run(main())
